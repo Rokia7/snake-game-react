@@ -9,6 +9,7 @@ How to use:
 */
 
 import { useEffect, useRef, useState, type JSX } from 'react';
+import VirtualDPadTouch from './components/Dpad/VirtualDPad';
 
 const CELL_SIZE = 20; // px
 const COLS = 20;
@@ -261,22 +262,11 @@ export default function SnakeGame(): JSX.Element {
               <div>Controls: Arrow keys / WASD / Touch buttons; Space to toggle pause.</div>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 w-40">
-              <button onClick={() => handleDirectionButton({ x: 0, y: -1 })} className="p-2 rounded bg-slate-700">
-                ▲
-              </button>
-              <div />
-              <button onClick={() => handleDirectionButton({ x: 1, y: 0 })} className="p-2 rounded bg-slate-700">
-                ►
-              </button>
-              <button onClick={() => handleDirectionButton({ x: -1, y: 0 })} className="p-2 rounded bg-slate-700">
-                ◄
-              </button>
-              <div />
-              <button onClick={() => handleDirectionButton({ x: 0, y: 1 })} className="p-2 rounded bg-slate-700">
-                ▼
-              </button>
+            <div className="flex justify-center items-center">
+              <VirtualDPadTouch onMove={(d) => handleDirectionButton(d)} />
             </div>
+
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2"></div>
 
             <div className="mt-4">
               <label className="block text-sm mb-1">Adjust speed (ms per tick)</label>
@@ -292,4 +282,3 @@ export default function SnakeGame(): JSX.Element {
     </div>
   );
 }
-
