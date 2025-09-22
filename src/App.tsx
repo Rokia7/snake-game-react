@@ -42,6 +42,7 @@ export default function SnakeGame(): JSX.Element {
   const [score, setScore] = useState<number>(0);
   const [speed, setSpeed] = useState<number>(TICK_MS);
   const [gameOver, setGameOver] = useState<boolean>(false);
+  const [obstacles, setObstacles] = useState<Position[]>([]);
 
   // Keep refs in sync for interval
   useEffect(() => {
@@ -83,6 +84,12 @@ export default function SnakeGame(): JSX.Element {
     ctx.fillStyle = '#ef4444';
     ctx.fillRect(food.x * CELL_SIZE + 2, food.y * CELL_SIZE + 2, CELL_SIZE - 4, CELL_SIZE - 4);
 
+    // obstacles
+    ctx.fillStyle = '#9ca3af';
+    obstacles.forEach((o) => {
+      ctx.fillRect(o.x * CELL_SIZE + 2, o.y * CELL_SIZE + 2, CELL_SIZE - 4, CELL_SIZE - 4);
+    });
+
     // snake
     for (let i = 0; i < snake.length; i++) {
       const s = snake[i];
@@ -114,15 +121,22 @@ export default function SnakeGame(): JSX.Element {
           return prev;
         }
 
+        // collision with obstacle
+        if (obstacles.some((o) => o.x === newHead.x && o.y === newHead.y)) {
+          setRunning(false);
+          setGameOver(true);
+          return prev;
+        }
+
         const ate = newHead.x === food.x && newHead.y === food.y;
         const newSnake = [newHead, ...prev];
         if (!ate) newSnake.pop();
         else {
           setScore((s) => s + 1);
-          // place new food avoiding snake
-          const exclude = newSnake.map((p) => `${p.x},${p.y}`);
+          const exclude = [...newSnake.map((p) => `${p.x},${p.y}`), ...obstacles.map((o) => `${o.x},${o.y}`)];
           setFood(randPosition(exclude));
-          // speed up slightly
+          const newObstacle = randPosition(exclude);
+          setObstacles([...obstacles, newObstacle]);
           setSpeed((sp) => Math.max(40, Math.round(sp * 0.95)));
         }
         return newSnake;
@@ -207,6 +221,7 @@ export default function SnakeGame(): JSX.Element {
     setDir({ x: 1, y: 0 });
     dirRef.current = { x: 1, y: 0 };
     setFood(randPosition(['8,10', '7,10', '6,10']));
+    setObstacles([]);
     setRunning(false);
     setScore(0);
     setSpeed(TICK_MS);
