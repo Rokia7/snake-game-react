@@ -51,7 +51,7 @@ export default function VirtualDPadTouch({ onMove, onRelease }: VirtualDPadTouch
   return (
     <div
       ref={areaRef}
-      className="relative w-32 h-32 rounded-full bg-black/30 border border-white/20 select-none touch-none"
+      className={`relative w-48 h-48 rounded-full bg-black/30 border border-white/20 select-none touch-none`}
       onTouchStart={handleTouch}
       onTouchMove={handleTouch}
       onTouchEnd={resetTouch}

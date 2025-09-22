@@ -164,7 +164,6 @@ export default function SnakeGame(): JSX.Element {
       }
     };
     const onKey = (e: KeyboardEvent) => {
-      console.log('🚀 ~ onKey ~ e:', e);
       const res = mapKeyToDir(e.key);
       if (!res) return;
       if (res === 'TOGGLE') {
