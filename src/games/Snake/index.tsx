@@ -101,6 +101,7 @@ export default function SnakeGame(): JSX.Element {
     ctx.fillStyle = 'white';
     ctx.font = '14px sans-serif';
     ctx.fillText(`Score: ${score}`, 6, canvas.height - 6);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [snake, food, score]);
 
   // Game loop
@@ -144,6 +145,7 @@ export default function SnakeGame(): JSX.Element {
     }, speed);
 
     return () => clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, speed, food, gameOver]);
 
   // Keyboard
@@ -201,6 +203,7 @@ export default function SnakeGame(): JSX.Element {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameOver]);
 
   function startGame(): void {
