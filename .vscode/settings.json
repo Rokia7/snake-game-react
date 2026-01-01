@@ -1,0 +1,47 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": [
+    "chơi",
+    "Chọn",
+    "chuyển",
+    "Đang",
+    "Danh",
+    "Điều",
+    "fceumm",
+    "Hoặc",
+    "khiển",
+    "Không",
+    "kiểm",
+    "lòng",
+    "ngang",
+    "Phím",
+    "sách",
+    "thiết",
+    "Thoát",
+    "threeeyedone",
+    "tính",
+    "topgun",
+    "trong",
+    "WASD",
+    "Xoay"
+  ]
+}
