@@ -1,5 +1,6 @@
 import { Nostalgist } from 'nostalgist';
 import { useEffect, useRef, useState } from 'react';
+import VirtualController from './VirtualController';
 
 interface GameInfo {
   id: string;
@@ -521,208 +522,16 @@ export default function Nes8bitGame() {
 
       {/* Virtual Gamepad for Mobile */}
       {isMobile && nostalgist && isLandscape && (
-        <div className="fixed bottom-0 left-0 right-0 p-4 flex justify-between items-end z-40">
-          {/* D-Pad */}
-          <div className="relative">
-            <div
-              ref={dpadRef}
-              className="relative w-40 h-40 rounded-full bg-black/30 border border-white/20 touch-none select-none"
-              onTouchStart={handleDpadTouch}
-              onTouchMove={handleDpadTouch}
-              onTouchEnd={handleDpadRelease}
-              onTouchCancel={handleDpadRelease}
-              style={{ touchAction: 'none' }}
-            >
-              {/* Up */}
-              <div
-                className={`absolute top-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-t-full flex items-center justify-center text-white text-xl shadow-lg touch-none select-none transition-colors ${
-                  activeButtons.has('ArrowUp') ? 'bg-blue-600 scale-95' : 'bg-gray-700'
-                }`}
-              >
-                ▲
-              </div>
-              {/* Down */}
-              <div
-                className={`absolute bottom-0 left-1/2 -translate-x-1/2 w-14 h-14 rounded-b-full flex items-center justify-center text-white text-xl shadow-lg touch-none select-none transition-colors ${
-                  activeButtons.has('ArrowDown') ? 'bg-blue-600 scale-95' : 'bg-gray-700'
-                }`}
-              >
-                ▼
-              </div>
-              {/* Left */}
-              <div
-                className={`absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-l-full flex items-center justify-center text-white text-xl shadow-lg touch-none select-none transition-colors ${
-                  activeButtons.has('ArrowLeft') ? 'bg-blue-600 scale-95' : 'bg-gray-700'
-                }`}
-              >
-                ◀
-              </div>
-              {/* Right */}
-              <div
-                className={`absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-r-full flex items-center justify-center text-white text-xl shadow-lg touch-none select-none transition-colors ${
-                  activeButtons.has('ArrowRight') ? 'bg-blue-600 scale-95' : 'bg-gray-700'
-                }`}
-              >
-                ▶
-              </div>
-              {/* Center */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-9 h-9 bg-gray-900 rounded-full"></div>
-            </div>
-          </div>
-
-          {/* Right Side Controls */}
-          <div className="flex flex-col items-end gap-3 pr-5 pb-5">
-            {/* Reset Button */}
-            <button
-              onTouchStart={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-              onClick={(e) => {
-                e.preventDefault();
-                handleResetGame();
-              }}
-              className="px-3 py-1 rounded-full bg-yellow-600 text-white text-xs font-bold shadow-lg touch-none select-none transition-all hover:bg-yellow-700 active:scale-90 mb-1"
-            >
-              🔄 RESET
-            </button>
-            {/* Start & Select */}
-            <div className="flex gap-2 mb-2">
-              <button
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('Shift', 'keydown');
-                }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('Shift', 'keyup');
-                }}
-                onTouchCancel={(e) => {
-                  e.preventDefault();
-                  simulateKeyPress('Shift', 'keyup');
-                }}
-                className={`px-4 py-2 rounded-full text-white text-xs font-bold shadow-lg touch-none select-none transition-all ${
-                  activeButtons.has('Shift') ? 'bg-gray-600 scale-90' : 'bg-gray-700'
-                }`}
-              >
-                SELECT
-              </button>
-              <button
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('Enter', 'keydown');
-                }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('Enter', 'keyup');
-                }}
-                onTouchCancel={(e) => {
-                  e.preventDefault();
-                  simulateKeyPress('Enter', 'keyup');
-                }}
-                className={`px-4 py-2 rounded-full text-white text-xs font-bold shadow-lg touch-none select-none transition-all ${
-                  activeButtons.has('Enter') ? 'bg-gray-600 scale-90' : 'bg-gray-700'
-                }`}
-              >
-                START
-              </button>
-            </div>
-            {/* A & B Buttons */}
-            <div className="flex gap-3 mb-2">
-              <button
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('x', 'keydown');
-                }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('x', 'keyup');
-                }}
-                onTouchCancel={(e) => {
-                  e.preventDefault();
-                  simulateKeyPress('x', 'keyup');
-                }}
-                className={`w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-2xl border-2 border-red-800 touch-none select-none transition-all ${
-                  activeButtons.has('x') ? 'bg-red-700 scale-90' : 'bg-red-600'
-                }`}
-              >
-                B
-              </button>
-              <button
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleTurboButtonStart('a');
-                }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleTurboButtonEnd('a');
-                }}
-                onTouchCancel={(e) => {
-                  e.preventDefault();
-                  handleTurboButtonEnd('a');
-                }}
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-2xl border-2 border-orange-800 touch-none select-none transition-all ${
-                  activeButtons.has('a') ? 'bg-orange-700 scale-90' : 'bg-orange-600'
-                }`}
-              >
-                AA
-              </button>
-            </div>
-            {/* Turbo BA & AA Buttons */}
-            <div className="flex gap-3">
-              <button
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleTurboButtonStart('s');
-                }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleTurboButtonEnd('s');
-                }}
-                onTouchCancel={(e) => {
-                  e.preventDefault();
-                  handleTurboButtonEnd('s');
-                }}
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-2xl border-2 border-orange-800 touch-none select-none transition-all ${
-                  activeButtons.has('s') ? 'bg-orange-700 scale-90' : 'bg-orange-600'
-                }`}
-              >
-                BA
-              </button>
-              <button
-                onTouchStart={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('z', 'keydown');
-                }}
-                onTouchEnd={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  simulateKeyPress('z', 'keyup');
-                }}
-                onTouchCancel={(e) => {
-                  e.preventDefault();
-                  simulateKeyPress('z', 'keyup');
-                }}
-                className={`w-14 h-14 rounded-full flex items-center justify-center text-white text-lg font-bold shadow-2xl border-2 border-red-800 touch-none select-none transition-all ${
-                  activeButtons.has('z') ? 'bg-red-700 scale-90' : 'bg-red-600'
-                }`}
-              >
-                A
-              </button>
-            </div>
-          </div>
-        </div>
+        <VirtualController
+          activeButtons={activeButtons}
+          dpadRef={dpadRef}
+          onDpadTouch={handleDpadTouch}
+          onDpadRelease={handleDpadRelease}
+          onKeyPress={simulateKeyPress}
+          onTurboStart={handleTurboButtonStart}
+          onTurboEnd={handleTurboButtonEnd}
+          onReset={handleResetGame}
+        />
       )}
     </div>
   );
