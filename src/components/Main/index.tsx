@@ -2,6 +2,7 @@ import React, { Suspense, type PropsWithChildren } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import SnakeGame from '../../games/Snake';
 import FlappyBox from '../../games/FlappyBox';
+import Nes8bitGame from '../../games/Nes8Bit';
 
 type ContainerProps = object;
 
@@ -28,6 +29,16 @@ const Container: React.FC<ContainerProps> = () => {
             element={
               <CustomRoute>
                 <FlappyBox />
+              </CustomRoute>
+            }
+          />
+
+          {/* ================== NES 8-Bit ================== */}
+          <Route
+            path="/nes"
+            element={
+              <CustomRoute>
+                <Nes8bitGame />
               </CustomRoute>
             }
           />
